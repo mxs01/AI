@@ -1,5 +1,5 @@
 import numpy as np
-
+import random
 # (a)
 def simulated_anneling(start_state, schedule, find_conflicts):
     """Implements the simulated annealing algorithm with the given schedule"""
@@ -31,7 +31,7 @@ def simulated_anneling(start_state, schedule, find_conflicts):
         else:
             probability = np.exp(delta_energy/ temperature)
             random_number = np.random.rand()
-            if (probability == random_number):
+            if (probability > random_number):
                 current_state = next_state
             
         num_steps += 1
@@ -47,8 +47,12 @@ def find_random_successor(state):
     Returns:
         List: new random variation of a possible 8-Queens State
     """
-    np.random.shuffle(state)
-    return state
+    
+    new_state = state.copy()
+    i,j = random.sample(range(len(new_state)),2)
+    new_state[i], new_state[j] = new_state[j], new_state[i]
+    
+    return new_state
 
 def find_conflicts(state):
     """finds conflicst in row or diagonal of a 8-Queens problem
